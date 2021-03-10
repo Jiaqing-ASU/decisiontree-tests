@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 
-string testDataOnDecisionTreeRules(vector<string> dataTableElement){
+string testDataOnDecisionTreeRules(vector<string> & dataTableElement){
     if(dataTableElement[0]=="Sunny"){
         if(dataTableElement[1]=="high"){
             return "no";
