@@ -1,8 +1,8 @@
 function.cpp contains the functions which will be used in DecisionTree.cpp and DecisionTreeUseRules.cpp.
 
-traintennis.txt is a training dataset for building Decision Tree.
+train.txt is a training dataset for building Decision Tree.
 
-testtennis.txt is a small test dataset which contains 300 instances.
+smalltest.txt is a small test dataset which contains 300 instances.
 
 largertest.txt is a larger test dataset which contains 3000 instances.
 
@@ -17,7 +17,7 @@ To run the decision tree code. First go to Makefile and comment the "SOURCES....
 And then, use the following command if choosing to run tree nodes version:
 $make clean
 $make
-$./dtree traintennis.txt largertest.txt
+$./dtree train.txt largertest.txt
 
 Use the following command if choosing to run rules version:
 $make clean

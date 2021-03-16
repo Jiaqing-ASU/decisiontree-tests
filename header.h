@@ -8,14 +8,19 @@
 #include <cstdlib>
 #include <iomanip>
 #include<time.h>
+#include<stdio.h>
+#include<memory.h>
+#include<sys/mman.h>
 
 using namespace std;
 
 typedef vector<string> vs;
 typedef vector<vs> vvs;
 typedef vector<int> vi;
+typedef vector<vi> vvi;
 typedef map<string, int> msi;
 typedef vector<double> vd;
+typedef int (* rules_func)(int * a);
 
 // struct node defines the structure of a node of the decision tree
 struct node
@@ -38,5 +43,5 @@ int returnColumnIndex(string&, vvs&);// Return the index of a column in a subtab
 bool tableIsEmpty(vvs&);// Return true if a subtable is empty
 string testDataOnDecisionTree(vs&, node*, vvs&);// Run a single instance of the test data through the decision tree and return the predicted class label
 int returnIndexOfVector(vs&, string);// Return the index of a string in a vector of strings
-void printPredictions(vs&, vs&);// Output the predictions to file
+void printPredictions(vi&, vi&);// Output the predictions to file
 vvs generateTableInfo(vvs &dataTable);// Generate information about the table in a vector of vector of stings

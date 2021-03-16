@@ -216,7 +216,7 @@ int returnIndexOfVector(vs &stringVector, string value)
 }
 
 // Outputs the predictions to file and returns the accuracy of the classification
-void printPredictions(vs &givenData, vs &predictions)
+void printPredictions(vi &givenData, vi &predictions)
 {
 	ofstream outputFile;
 	outputFile.open("decisionTreeOutput.txt");
