@@ -15,6 +15,6 @@ librules.so is a .so library file which contains the rules.
 add.cpp, libadd_c.so and test.cpp is a simple test used to test how to use .so file in a .cpp file.
 
 To run the decision tree rules code:
-$g++ -shared -fpic -lm -ldl -o librules.so rules.cpp
-$g++ functions.cpp DecisionTreeUseRulesSO.cpp -ldl -o dtree
+$g++ -O3 -shared -fpic -lm -ldl -o librules.so rules.cpp
+$g++ -O3 functions.cpp DecisionTreeUseRulesSO.cpp -ldl -o dtree
 $./dtree test.txt

@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS=-c -w -O2
+CFLAGS=-c -w -O3
 #SOURCES=functions.cpp DecisionTree.cpp
 #SOURCES=functions.cpp DecisionTreeUseRules.cpp
 SOURCES=functions.cpp DecisionTreeUseSepRules.cpp
