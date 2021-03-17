@@ -3,9 +3,26 @@
 int main(int argc, const char *argv[])
 {
     clock_t start,end;
+    msi mdata;
+    msi mresult;
+    mdata["Sunny"] = 1;
+    mdata["Overcast"] = 2;
+    mdata["Rain"] = 3;
+    mdata["high"] = 4;
+    mdata["normal"] = 5;
+    mdata["strong"] = 6;
+    mdata["weak"] = 7;
+    mdata["Outlook"] = 8;
+    mdata["Humidity"] = 9;
+    mdata["Wind"] = 10;
+    mdata["Result"] = 11;
+    mresult["yes"] = 1;
+    mresult["no"] = 2;
+    mresult["none"] = -1;
 	ifstream inputFile;// Input file stream
 	string singleInstance;// Single line read from the input file 
 	vvs dataTable;// Input data in the form of a vector of vector of strings
+    vvi dataTableInt;// Input data in the form of a vector of vector of Ints
 	inputFile.open(argv[1]);
     // If input file does not exist, print error and exit
 	if (!inputFile)
@@ -22,12 +39,33 @@ int main(int argc, const char *argv[])
 		parse(singleInstance, dataTable);
 	}
 	inputFile.close();// Close input file
+    // Transfer input data from string to Int using map
+    for (int i = 0; i < dataTable.size(); i++)
+	{
+        if(i==0){
+            vi dataTableIntRow;
+            for(int j = 0; j < dataTable[0].size(); j++){
+                dataTableIntRow.push_back(mdata[dataTable[i][j]]);
+            }
+            dataTableInt.push_back(dataTableIntRow);
+            dataTableIntRow.clear();
+        }else{
+            vi dataTableIntRow;
+            for (int j = 0; j < dataTable[0].size()-1; j++){
+                dataTableIntRow.push_back(mdata[dataTable[i][j]]);
+            }
+            dataTableIntRow.push_back(mresult[dataTable[i][dataTable[0].size()-1]]);
+            dataTableInt.push_back(dataTableIntRow);
+            dataTableIntRow.clear();
+        }
+	}
     // Stores all the attributes and their values in a vector of vector of strings named tableInfo
-	vvs tableInfo = generateTableInfo(dataTable);
+	vvi tableInfo = generateTableInfo(dataTableInt);
     // Declare and assign memory for the root node of the Decision Tree
 	node* root = new node;
     // Recursively build and train decision tree
-	root = buildDecisionTree(dataTable, root, tableInfo);
+	root = buildDecisionTree(dataTableInt, root, tableInfo);
+    //printDecisionTree(root);
 	dataTable.clear(); // clear dataTable of training data to store testing data
     
 /* Decision tree testing phase. In this phase, the testing is read from the file, parsed and stored. Each row in the table is made to traverse down the decision tree till a class label is found*/
@@ -44,20 +82,23 @@ int main(int argc, const char *argv[])
 	{
 		parse(singleInstance, dataTable);
 	}
-	vs predictedClassLabels;// Stores the predicted class labels for each row
-	vs givenClassLabels;// Stores the given class labels in the test data
+    // Stores the predicted class labels for each row in Int
+    vi predictedClassLabelsInt;
+    // Stores the given class labels in the test data in Int
+    vi givenClassLabelsInt;
     // Store given class labels in vector of strings named givenClassLabels
 	for (int i = 1; i < dataTable.size(); i++)
 	{
-		string data = dataTable[i][dataTable[0].size()-1];
-		givenClassLabels.push_back(data);
+        string data = dataTable[i][dataTable[0].size()-1];
+        int dataInt = mresult[data];
+        givenClassLabelsInt.push_back(dataInt);
 	}
     start=clock();
     // Predict class labels based on the decision tree
-	for (int i = 1; i < dataTable.size(); i++)
+	for (int i = 1; i < dataTableInt.size(); i++)
 	{
-		string someString = testDataOnDecisionTree(dataTable[i], root, tableInfo);
-		predictedClassLabels.push_back(someString);
+		int someInt = testDataOnDecisionTree(dataTableInt[i],root,tableInfo);
+		predictedClassLabelsInt.push_back(someInt);
 	}
     end=clock();
     cout<<"Time Using: "<<(double)(end-start)/CLOCKS_PER_SEC<<endl;
@@ -67,6 +108,6 @@ int main(int argc, const char *argv[])
 	outputFile.open("decisionTreeOutput.txt", ios::app);
 	outputFile << endl << "--------------------------------------------------" << endl;
 	// Print predictions
-    printPredictions(givenClassLabels, predictedClassLabels);
+    printPredictions(givenClassLabelsInt, predictedClassLabelsInt);
 	return 0;
 }

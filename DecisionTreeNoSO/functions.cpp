@@ -18,15 +18,35 @@ void parse(string& someString, vvs &attributeTable)
 	attributeTable.push_back(vectorOfStrings);
 	vectorOfStrings.clear();
 }
+// Print tree
+void printDecisionTree(node* nodePtr)
+{
+	if(nodePtr == NULL) {
+		return;
+	}
+	if (!nodePtr->children.empty()) {
+		cout << " Value: " << nodePtr->label << endl;
+		cout << "Split on: " << nodePtr->splitOn;
+		for (int i = 0; i < nodePtr->children.size(); i++) {   
+			cout << "\t";
+			printDecisionTree(nodePtr->children[i]);
+		}
+		return;
+        } else {
+		cout << "Predicted class = " << nodePtr->label;
+        cout << endl;
+		return;
+	}
+}
 
 // Prunes a table based on a column/attribute's name and value of that attribute
 // Removes that column and all rows that have that value for that column
-vvs pruneTable(vvs &attributeTable, string &colName, string value)
+vvi pruneTable(vvi &attributeTable, int &colName, int value)
 {
 	int i, j;
-	vvs prunedTable;
+	vvi prunedTable;
 	int column = -1;
-	vs headerRow;
+	vi headerRow;
 	for (i = 0; i < attributeTable[0].size(); i++) {
 		if (attributeTable[0][i] == colName) {
 			column = i;
@@ -40,7 +60,7 @@ vvs pruneTable(vvs &attributeTable, string &colName, string value)
 	}
 	prunedTable.push_back(headerRow);
 	for (i = 0; i < attributeTable.size(); i++) {
-		vs auxRow;
+		vi auxRow;
 		if (attributeTable[i][column] == value) {
 			for (j = 0; j < attributeTable[i].size(); j++) {
 				if(j != column) {
@@ -54,7 +74,7 @@ vvs pruneTable(vvs &attributeTable, string &colName, string value)
 }
 
 // Recursively builds the decision tree based on the passed data and table info
-node* buildDecisionTree(vvs &table, node* nodePtr, vvs &tableInfo)
+node* buildDecisionTree(vvi &table, node* nodePtr, vvi &tableInfo)
 {
 	if (tableIsEmpty(table)) {
 		return NULL;
@@ -64,7 +84,7 @@ node* buildDecisionTree(vvs &table, node* nodePtr, vvs &tableInfo)
 		nodePtr->label = table[1][table[1].size()-1];
 		return nodePtr;
 	} else {
-		string splittingCol = decideSplittingColumn(table);
+		int splittingCol = decideSplittingColumn(table);
 		nodePtr->splitOn = splittingCol;
 		int colIndex = returnColumnIndex(splittingCol, tableInfo);
 		int i;
@@ -74,7 +94,7 @@ node* buildDecisionTree(vvs &table, node* nodePtr, vvs &tableInfo)
 			nodePtr->childrenValues.push_back(tableInfo[colIndex][i]);
 			newNode->isLeaf = false;
 			newNode->splitOn = splittingCol;
-			vvs auxTable = pruneTable(table, splittingCol, tableInfo[colIndex][i]);
+			vvi auxTable = pruneTable(table, splittingCol, tableInfo[colIndex][i]);
 			nodePtr->children.push_back(buildDecisionTree(auxTable, newNode, tableInfo));
 		}
 	}
@@ -83,11 +103,11 @@ node* buildDecisionTree(vvs &table, node* nodePtr, vvs &tableInfo)
 
 // Returns true if all rows in a subtable have the same class label
 // This means that that node's class label has been decided
-bool isHomogeneous(vvs &table)
+bool isHomogeneous(vvi &table)
 {
 	int i;
 	int lastCol = table[0].size() - 1;
-	string firstValue = table[1][lastCol];
+	int firstValue = table[1][lastCol];
 	for (i = 1; i < table.size(); i++) {
 		if (firstValue != table[i][lastCol]) {
 			return false;
@@ -97,15 +117,15 @@ bool isHomogeneous(vvs &table)
 }
 
 // Returns a vector of integers containing the counts of all the various values of an attribute/column
-vi countDistinct(vvs &table, int column)
+vi countDistinct(vvi &table, int column)
 {
-	vs vectorOfStrings;
+	vi vectorOfInts;
 	vi counts;
 	bool found = false;
 	int foundIndex;
 	for (int i = 1; i < table.size(); i++) {
-		for (int j = 0; j < vectorOfStrings.size(); j++) {
-			if (vectorOfStrings[j] == table[i][column]) {
+		for (int j = 0; j < vectorOfInts.size(); j++) {
+			if (vectorOfInts[j] == table[i][column]) {
 				found = true;
 				foundIndex = j;
 				break;
@@ -115,7 +135,7 @@ vi countDistinct(vvs &table, int column)
 		}
 		if (!found) {
 			counts.push_back(1);
-			vectorOfStrings.push_back(table[i][column]);
+			vectorOfInts.push_back(table[i][column]);
 		} else {
 			counts[foundIndex]++;
 		}
@@ -130,15 +150,15 @@ vi countDistinct(vvs &table, int column)
 
 // Decides which column to split on based on entropy
 // Returns the column with the least entropy
-string decideSplittingColumn(vvs &table)
+int decideSplittingColumn(vvi &table)
 {
 	int column, i;
 	double minEntropy = DBL_MAX;
 	int splittingColumn = 0;
 	vi entropies;
 	for (column = 0; column < table[0].size() - 1; column++) {
-		string colName = table[0][column];
-		msi tempMap;
+		int colName = table[0][column];
+		mii tempMap;
 		vi counts = countDistinct(table, column);
 		vd attributeEntropy;
 		double columnEntropy = 0.0;
@@ -148,7 +168,7 @@ string decideSplittingColumn(vvs &table)
 				tempMap[table[i][column]]++;
 			} else { 							// IF ATTRIBUTE IS FOUND FOR THE FIRST TIME IN A COLUMN, THEN PROCESS IT AND CALCULATE IT'S ENTROPY
 				tempMap[table[i][column]] = 1;
-				vvs tempTable = pruneTable(table, colName, table[i][column]);
+				vvi tempTable = pruneTable(table, colName, table[i][column]);
 				vi classCounts = countDistinct(tempTable, tempTable[0].size()-1);
 				int j, kkk;
 				for (j = 0; j < classCounts.size(); j++) {
@@ -171,8 +191,8 @@ string decideSplittingColumn(vvs &table)
 	return table[0][splittingColumn];
 }
 
-// Returns an integer which is the index of a column passed as a string
-int returnColumnIndex(string &columnName, vvs &tableInfo)
+// Returns an integer which is the index of a column passed as a int
+int returnColumnIndex(int &columnName, vvi &tableInfo)
 {
 	int i;
 	for (i = 0; i < tableInfo.size(); i++) {
@@ -184,31 +204,35 @@ int returnColumnIndex(string &columnName, vvs &tableInfo)
 }
 
 // Returns true if the table is empty returns false otherwise
-bool tableIsEmpty(vvs &table)
+bool tableIsEmpty(vvi &table)
 {
 	return (table.size() == 1);
 }
 
 // Takes a row and traverses that row through the decision tree to find out the predicted class label. If none is found, returns the default class label which is the class label with the highest frequency
-string testDataOnDecisionTree(vs &singleLine, node* nodePtr, vvs &tableInfo)
+int testDataOnDecisionTree(vi &singleLine, node* nodePtr, vvi &tableInfo)
 {
-	string prediction;
+	int prediction;
 	while (!nodePtr->isLeaf && !nodePtr->children.empty()) {
 		int index = returnColumnIndex(nodePtr->splitOn, tableInfo);
-		string value = singleLine[index];
+		int value = singleLine[index];
 		int childIndex = returnIndexOfVector(nodePtr->childrenValues, value);
 		nodePtr = nodePtr->children[childIndex];
+        if (nodePtr == NULL) {
+			prediction = -1;
+			break;
+		}
 		prediction = nodePtr->label;
 	}
 	return prediction;
 }
 
-// Returns an integer which is the index of a string in a vector of strings
-int returnIndexOfVector(vs &stringVector, string value)
+// Returns an integer which is the index of an int in a vector of ints
+int returnIndexOfVector(vi &intVector, int value)
 {
 	int i;
-	for (i = 0; i < stringVector.size(); i++) {
-		if (stringVector[i] == value)	{
+	for (i = 0; i < intVector.size(); i++) {
+		if (intVector[i] == value)	{
 			return i;
 		}
 	}
@@ -239,13 +263,13 @@ void printPredictions(vi &givenData, vi &predictions)
 	outputFile.close();
 }
 
-// Returns a vvs which contains information about the data table. The vvs contains the names of all the columns and the values that each column can take
-vvs generateTableInfo(vvs &dataTable)
+// Returns a vvi which contains information about the data table. The vvi contains the names of all the columns and the values that each column can take
+vvi generateTableInfo(vvi &dataTable)
 {
-	vvs tableInfo;
+	vvi tableInfo;
 	for (int i = 0; i < dataTable[0].size(); i++) {
-		vs tempInfo;
-		msi tempMap;
+		vi tempInfo;
+		mii tempMap;
 		for (int j = 0; j < dataTable.size(); j++) {
 			if (tempMap.count(dataTable[j][i]) == 0) {
 				tempMap[dataTable[j][i]] = 1;

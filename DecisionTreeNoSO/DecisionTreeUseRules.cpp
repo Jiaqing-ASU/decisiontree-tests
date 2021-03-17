@@ -1,29 +1,5 @@
 #include "header.h"
 
-int testDataOnDecisionTreeRules(int * dataTableElement){
-    if(dataTableElement[0]==1){
-        if(dataTableElement[1]==4){
-            return 2;
-        }else if(dataTableElement[1]==5){
-            return 1;
-        }else{
-            return -1;
-        }
-    }else if(dataTableElement[0]==2){
-        return 1;
-    }else if(dataTableElement[0]==3){
-        if(dataTableElement[2]==6){
-            return 2;
-        }else if(dataTableElement[2]==7){
-            return 1;
-        }else{
-            return -1;
-        }
-    }else{
-        return -1;
-    }
-}
-
 int main(int argc, const char *argv[])
 {
     clock_t start,end;
@@ -88,11 +64,11 @@ int main(int argc, const char *argv[])
     // Store machine code into memory
     memcpy(temp, code, sizeof(code));
     // Type conversion, converting memory to a function pointer
-    rules_func p_testDataOnDecisionTreeRules = (rules_func)temp;
+    rules_func_t p_testDataOnDecisionTreeRules = (rules_func_t)temp;
 	ifstream inputFile;// Input file stream
 	string singleInstance;// Single line read from the input file 
 	vvs dataTable;// Input data in the form of a vector of vector of strings
-    vvi dataTableInt;
+    vvi dataTableInt;// Input data in the form of a vector of vector of Ints
     inputFile.clear();
 	inputFile.open(argv[1]); // Open test file
 	if (!inputFile) // Exit if test file is not found
@@ -107,13 +83,13 @@ int main(int argc, const char *argv[])
     int row = dataTable.size()-1;
     int column = dataTable[0].size();
     int dataArrayInt[row][column];
-	vs predictedClassLabels;// Stores the predicted class labels for each row
-    vi predictedClassLabelsInt;;// Stores the predicted class labels for each row in int
-	vs givenClassLabels;// Stores the given class labels in the test data
-    vi givenClassLabelsInt;// Stores the given class labels in the test data in int
+    // Stores the predicted class labels for each row in Int
+    vi predictedClassLabelsInt;
+    // Stores the given class labels in the test data in Int
+    vi givenClassLabelsInt;
     // Store given class labels in vector of strings named givenClassLabels
-    // Transfer input data from string to int using map
-	for (int i = 1; i < dataTable.size(); i++)
+    // Transfer input data from string to Int using map
+    for (int i = 1; i < dataTable.size(); i++)
 	{
         string data = dataTable[i][dataTable[0].size()-1];
         int dataInt = mresult[data];

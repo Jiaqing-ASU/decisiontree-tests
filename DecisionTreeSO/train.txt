@@ -1,0 +1,13 @@
+Outlook,Humidity,Wind,Result
+Sunny,high,strong,no
+Sunny,high,weak,no
+Sunny,normal,strong,yes
+Sunny,normal,weak,yes
+Overcast,high,strong,yes
+Overcast,normal,strong,yes
+Overcast,high,weak,yes
+Overcast,normal,weak,yes
+Rain,high,strong,no
+Rain,normal,strong,no
+Rain,high,weak,yes
+Rain,normal,weak,yes
