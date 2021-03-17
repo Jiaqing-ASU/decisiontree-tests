@@ -1,4 +1,4 @@
-function.cpp contains the functions which will be used in DecisionTree.cpp and DecisionTreeUseRules.cpp.
+function.cpp contains the functions which will be used in DecisionTree.cpp and DecisionTreeUseRules.cpp and DecisionTreeUseSepRules.cpp.
 
 train.txt is a training dataset for building Decision Tree.
 
@@ -19,7 +19,7 @@ $make clean
 $make
 $./dtree train.txt test.txt
 
-Use the following command if choosing to run rules version:
+Use the following command if choosing to run rules (including both one whole rule and separate rules) version:
 $make clean
 $make
 $./dtree test.txt

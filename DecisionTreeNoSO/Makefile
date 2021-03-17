@@ -1,7 +1,8 @@
 CC = g++
 CFLAGS=-c -w -O2
 #SOURCES=functions.cpp DecisionTree.cpp
-SOURCES=functions.cpp DecisionTreeUseRules.cpp
+#SOURCES=functions.cpp DecisionTreeUseRules.cpp
+SOURCES=functions.cpp DecisionTreeUseSepRules.cpp
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=dtree
 
