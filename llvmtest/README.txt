@@ -18,9 +18,9 @@ $./llvmtest
 The output from the command line is the llvm IR module and it will also save as a file in bitcode, named test.bc
 
 And then use the following command to change the test.bc to test.ll:
-$llc -filetype=obj test.bc
+$llvm-dis test.bc
 
 Here, it is also ok to generate the ruletest.ll from ruletest.bc using the same command:
-$llc -filetype=obj ruletest.bc
+$llvm-dis ruletest.bc
 
 The ruletest.ll generated here should be the same as previous ruletest.ll.
