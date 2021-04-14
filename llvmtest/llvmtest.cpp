@@ -15,10 +15,23 @@
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/ToolOutputFile.h"
 #include "llvm/Bitcode/BitcodeWriter.h"
-#include <algorithm>
+#include "llvm/ExecutionEngine/ExecutionEngine.h"
+#include "llvm/ExecutionEngine/JITSymbol.h"
+#include "llvm/ExecutionEngine/Orc/LLJIT.h"
+#include "llvm/ExecutionEngine/Orc/CompileUtils.h"
+#include "llvm/ExecutionEngine/Orc/IRCompileLayer.h"
+#include "llvm/ExecutionEngine/Orc/LambdaResolver.h"
+#include "llvm/ExecutionEngine/Orc/RTDyldObjectLinkingLayer.h"
+#include "llvm/ExecutionEngine/RTDyldMemoryManager.h"
+#include "llvm/ExecutionEngine/SectionMemoryManager.h"
 #include <cassert>
 #include <memory>
 #include <vector>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <fstream>
+#include <iostream>
 
 using namespace llvm;
 using namespace std;
@@ -32,7 +45,7 @@ int main() {
  // Create the function entry and insert this entry into module M.
  // The function will have a return type of "int" and take an argument of "int*".
     Function *F =
-        Function::Create(FunctionType::get(Type::getInt32Ty(Context),{Type::getInt32PtrTy(Context)}, false),Function::ExternalLinkage, "testDataOnDecisionTreeRules", M);
+        Function::Create(FunctionType::get(Type::getInt32Ty(Context),{Type::getInt32PtrTy(Context)}, false),Function::ExternalLinkage, "rules", M);
 
  // Add a basic block to the function. As before, it automatically inserts because of the last argument.
     BasicBlock *BB = BasicBlock::Create(Context, "entry", F);
