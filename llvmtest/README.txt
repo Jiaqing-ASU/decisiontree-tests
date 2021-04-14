@@ -33,3 +33,14 @@ And then run the following command:
 $./main
 
 It will give the output in the command line using the function in the bitcode.
+
+llvmcomplextest.cpp is the file to generate more complex llvm IR rules in C using llvm-C-API. To compile this cpp, use the command:
+$clang++ -g llvmcomplextest.cpp $(/usr/local/opt/llvm/bin/llvm-config --cxxflags --ldflags --system-libs --libs core mcjit native orcjit) -rdynamic -O3 -o llvmcomplextest
+(Make sure to change the correct path of your llvm@11)
+
+And then run the following command:
+$./llvmcomplextest
+
+The output from the command line is the llvm IR module and it will also save as a file in bitcode, named complextest.bc
+
+If do need to check the complextest.ll, use the same command/method as shown before.
