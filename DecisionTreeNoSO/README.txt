@@ -23,3 +23,10 @@ Use the following command if choosing to run rules (including both one whole rul
 $make clean
 $make
 $./dtree test.txt
+
+To run the DecisionTreeUseSepRulesllvm.cpp, use the following command:
+$clang++ -g DecisionTreeUseSepRulesllvm.cpp functions.cpp $(/usr/local/opt/llvm@11/bin/llvm-config --cxxflags --ldflags --system-libs --libs core mcjit native orcjit) -rdynamic -O3 -o dtree
+(Make sure to change the correct path of your llvm@11)
+
+And then run the following command:
+$./dtree test.txt
