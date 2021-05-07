@@ -65,7 +65,7 @@ int main(int argc, const char *argv[])
 	node* root = new node;
     // Recursively build and train decision tree
 	root = buildDecisionTree(dataTableInt, root, tableInfo);
-    //printDecisionTree(root);
+    printDecisionTree(root);
 	dataTable.clear(); // clear dataTable of training data to store testing data
     
 /* Decision tree testing phase. In this phase, the testing is read from the file, parsed and stored. Each row in the table is made to traverse down the decision tree till a class label is found*/

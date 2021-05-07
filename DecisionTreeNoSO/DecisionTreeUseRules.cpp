@@ -54,6 +54,7 @@ int main(int argc, const char *argv[])
     };
     // Allocate a piece of memory to store machine code
     void * temp = mmap(NULL, sizeof(code), PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+    cout << "Char array size is " << sizeof(code) << endl;
     // Store machine code into memory
     memcpy(temp, code, sizeof(code));
     // Type conversion, converting memory to a function pointer

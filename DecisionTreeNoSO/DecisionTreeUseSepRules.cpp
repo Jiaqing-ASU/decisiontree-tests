@@ -79,6 +79,7 @@ int main(int argc, const char *argv[])
     void * temp_3 = mmap(NULL, sizeof(code_3), PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
     void * temp_4 = mmap(NULL, sizeof(code_4), PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
     void * temp_5 = mmap(NULL, sizeof(code_5), PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+    cout << "Char array size is " << sizeof(code_1)+sizeof(code_2)+sizeof(code_3)+sizeof(code_4)+sizeof(code_5)<< endl;
     // Store machine code into memory
     memcpy(temp_1, code_1, sizeof(code_1));
     memcpy(temp_2, code_2, sizeof(code_2));

@@ -3,6 +3,7 @@ CFLAGS=-c -w -O3
 #SOURCES=functions.cpp DecisionTree.cpp
 #SOURCES=functions.cpp DecisionTreeUseRules.cpp
 SOURCES=functions.cpp DecisionTreeUseSepRules.cpp
+#SOURCES=functions.cpp DecisionTreeUseSepRulesllvm.cpp
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=dtree
 
