@@ -191,7 +191,7 @@ double decideSplittingColumn(vvd &table)
 	return table[0][splittingColumn];
 }
 
-// Returns an integer which is the index of a column passed as a int
+// Returns an integer which is the index of a column passed as a Double
 int returnColumnIndex(double &columnName, vvd &tableInfo)
 {
 	int i;
@@ -209,7 +209,7 @@ bool tableIsEmpty(vvd &table)
 	return (table.size() == 1);
 }
 
-// Takes a row and traverses that row through the decision tree to find out the predicted class label. If none is found, returns the default class label which is the class label with the highest frequency
+// Takes a row and traverses that row through the decision tree to find out the predicted class label. If none is found, returns the default label which is -1.0 in this tree
 double testDataOnDecisionTree(vd &singleLine, node* nodePtr, vvd &tableInfo)
 {
 	double prediction;
@@ -227,7 +227,7 @@ double testDataOnDecisionTree(vd &singleLine, node* nodePtr, vvd &tableInfo)
 	return prediction;
 }
 
-// Returns an integer which is the index of an int in a vector of ints
+// Returns an integer which is the index of a Double in a vector of ints
 int returnIndexOfVector(vi &intVector, double value)
 {
 	int i;
@@ -263,7 +263,7 @@ void printPredictions(vd &givenData, vd &predictions)
 	outputFile.close();
 }
 
-// Returns a vvi which contains information about the data table. The vvi contains the names of all the columns and the values that each column can take
+// Returns a vvd which contains information about the data table. The vvd contains the names of all the columns and the values that each column can take
 vvd generateTableInfo(vvd &dataTable)
 {
 	vvd tableInfo;

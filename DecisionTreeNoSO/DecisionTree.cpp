@@ -23,6 +23,8 @@ int main(int argc, const char *argv[])
 	string singleInstance;// Single line read from the input file 
 	vvs dataTable;// Input data in the form of a vector of vector of strings
     vvi dataTableInt;// Input data in the form of a vector of vector of Ints
+    vvs dataTableTest;// Input test data in the form of a vector of vector of strings
+    vvi dataTableIntTest;// Input test data in the form of a vector of vector of Ints
 	inputFile.open(argv[1]);
     // If input file does not exist, print error and exit
 	if (!inputFile)
@@ -65,7 +67,7 @@ int main(int argc, const char *argv[])
 	node* root = new node;
     // Recursively build and train decision tree
 	root = buildDecisionTree(dataTableInt, root, tableInfo);
-    printDecisionTree(root);
+    // printDecisionTree(root);
 	dataTable.clear(); // clear dataTable of training data to store testing data
     
 /* Decision tree testing phase. In this phase, the testing is read from the file, parsed and stored. Each row in the table is made to traverse down the decision tree till a class label is found*/
@@ -80,25 +82,46 @@ int main(int argc, const char *argv[])
     // Store test data in a table
 	while (getline(inputFile, singleInstance))
 	{
-		parse(singleInstance, dataTable);
+		parse(singleInstance, dataTableTest);
+	}
+	inputFile.close();// Close input file
+    // Transfer input data from string to Int using map
+    for (int i = 0; i < dataTableTest.size(); i++)
+	{
+        if(i==0){
+            vi dataTableIntTestRow;
+            for(int j = 0; j < dataTableTest[0].size(); j++){
+                dataTableIntTestRow.push_back(mdata[dataTableTest[i][j]]);
+            }
+            dataTableIntTest.push_back(dataTableIntTestRow);
+            dataTableIntTestRow.clear();
+        }else{
+            vi dataTableIntTestRow;
+            for (int j = 0; j < dataTableTest[0].size()-1; j++){
+                dataTableIntTestRow.push_back(mdata[dataTableTest[i][j]]);
+            }
+            dataTableIntTestRow.push_back(mresult[dataTableTest[i][dataTableTest[0].size()-1]]);
+            dataTableIntTest.push_back(dataTableIntTestRow);
+            dataTableIntTestRow.clear();
+        }
 	}
     // Stores the predicted class labels for each row in Int
     vi predictedClassLabelsInt;
     // Stores the given class labels in the test data in Int
     vi givenClassLabelsInt;
     // Store given class labels in vector of strings named givenClassLabels
-	for (int i = 1; i < dataTable.size(); i++)
+	for (int i = 1; i < dataTableTest.size(); i++)
 	{
-        string data = dataTable[i][dataTable[0].size()-1];
-        int dataInt = mresult[data];
-        givenClassLabelsInt.push_back(dataInt);
+        string data = dataTableTest[i][dataTableTest[0].size()-1];
+        int dataIntTest = mresult[data];
+        givenClassLabelsInt.push_back(dataIntTest);
 	}
     start=clock();
     // Predict class labels based on the decision tree
-	for (int i = 1; i < dataTableInt.size(); i++)
+	for (int i = 1; i < dataTableIntTest.size(); i++)
 	{
-		int someInt = testDataOnDecisionTree(dataTableInt[i],root,tableInfo);
-		predictedClassLabelsInt.push_back(someInt);
+		int someIntTest = testDataOnDecisionTree(dataTableIntTest[i],root,tableInfo);
+		predictedClassLabelsInt.push_back(someIntTest);
 	}
     end=clock();
     cout<<"Time Using: "<<(double)(end-start)/CLOCKS_PER_SEC<<endl;

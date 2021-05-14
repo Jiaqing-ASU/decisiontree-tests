@@ -21,8 +21,10 @@ int main(int argc, const char *argv[])
     mresult["none"] = -1.0;
 	ifstream inputFile;// Input file stream
 	string singleInstance;// Single line read from the input file 
-	vvs dataTable;// Input data in the form of a vector of vector of strings
-    vvd dataTableDouble;// Input data in the form of a vector of vector of Ints
+	vvs dataTable;// Input train data in the form of a vector of vector of strings
+    vvd dataTableDouble;// Input train data in the form of a vector of vector of Doubles
+    vvs dataTableTest;// Input test data in the form of a vector of vector of strings
+    vvd dataTableDoubleTest;// Input test data in the form of a vector of vector of Doubles
 	inputFile.open(argv[1]);
     // If input file does not exist, print error and exit
 	if (!inputFile)
@@ -39,7 +41,8 @@ int main(int argc, const char *argv[])
 		parse(singleInstance, dataTable);
 	}
 	inputFile.close();// Close input file
-    // Transfer input data from string to Int using map
+
+    // Transfer input data from string to Double using map
     for (int i = 0; i < dataTable.size(); i++)
 	{
         if(i==0){
@@ -59,11 +62,12 @@ int main(int argc, const char *argv[])
             dataTableDoubleRow.clear();
         }
 	}
-    // Stores all the attributes and their values in a vector of vector of strings named tableInfo
+    // Stores all the attributes and their values in a vector of vector of Doubles named tableInfo
 	vvd tableInfo = generateTableInfo(dataTableDouble);
     // Declare and assign memory for the root node of the Decision Tree
 	node* root = new node;
     // Recursively build and train decision tree
+
 	root = buildDecisionTree(dataTableDouble, root, tableInfo);
     // printDecisionTree(root);
 	dataTable.clear(); // clear dataTable of training data to store testing data
@@ -80,28 +84,51 @@ int main(int argc, const char *argv[])
     // Store test data in a table
 	while (getline(inputFile, singleInstance))
 	{
-		parse(singleInstance, dataTable);
+		parse(singleInstance, dataTableTest);
 	}
-    // Stores the predicted class labels for each row in Int
+	inputFile.close();// Close input file
+
+    // Transfer input test data from string to Double using map
+    for (int i = 0; i < dataTableTest.size(); i++)
+	{
+        if(i==0){
+            vd dataTableDoubleTestRow;
+            for(int j = 0; j < dataTableTest[0].size(); j++){
+                dataTableDoubleTestRow.push_back(mdata[dataTableTest[i][j]]);
+            }
+            dataTableDoubleTest.push_back(dataTableDoubleTestRow);
+            dataTableDoubleTestRow.clear();
+        }else{
+            vd dataTableDoubleTestRow;
+            for (int j = 0; j < dataTableTest[0].size()-1; j++){
+                dataTableDoubleTestRow.push_back(mdata[dataTableTest[i][j]]);
+            }
+            dataTableDoubleTestRow.push_back(mresult[dataTableTest[i][dataTableTest[0].size()-1]]);
+            dataTableDoubleTest.push_back(dataTableDoubleTestRow);
+            dataTableDoubleTestRow.clear();
+        }
+	}
+    // Stores the predicted class labels for each row in Double
     vd predictedClassLabels;
-    // Stores the given class labels in the test data in Int
+    // Stores the given class labels in the test data in Double
     vd givenClassLabels;
     // Store given class labels in vector of strings named givenClassLabels
-	for (int i = 1; i < dataTable.size(); i++)
+	for (int i = 1; i < dataTableTest.size(); i++)
 	{
-        string data = dataTable[i][dataTable[0].size()-1];
-        double dataDouble = mresult[data];
-        givenClassLabels.push_back(dataDouble);
+        string data = dataTableTest[i][dataTableTest[0].size()-1];
+        double dataDoubleTest = mresult[data];
+        givenClassLabels.push_back(dataDoubleTest);
 	}
+
     start=clock();
     // Predict class labels based on the decision tree
-	for (int i = 1; i < dataTableDouble.size(); i++)
+	for (int i = 1; i < dataTableDoubleTest.size(); i++)
 	{
-		double someDouble = testDataOnDecisionTree(dataTableDouble[i],root,tableInfo);
+		double someDouble = testDataOnDecisionTree(dataTableDoubleTest[i],root,tableInfo);
 		predictedClassLabels.push_back(someDouble);
 	}
     end=clock();
-    cout<<"Time Using: "<<(double)(end-start)/CLOCKS_PER_SEC<<endl;
+    cout << "Time Using: " <<(double)(end-start)/CLOCKS_PER_SEC << endl;
 	dataTable.clear();
     // Print output
 	ofstream outputFile;

@@ -59,7 +59,7 @@ int main() {
  // The builder will automatically append instructions to the basic block BB.
     IRBuilder<> builder(BB);
  // Set some values from the rule.
-    Value *nodeValue_1 = builder.getInt32(2);
+    Value *nodeValue_1 = builder.getInt32(1);
     Value *nodeValue_2 = builder.getInt32(4);
     Value *trueReturn = builder.getInt32(2);
     Value *falseReturn = builder.getInt32(-1);
@@ -69,7 +69,8 @@ int main() {
     
  // Do the compare in the first block using the first rule.
     Value* givenValue_1 = builder.CreateLoad(givenArray);
-    Value *cond_1 = builder.CreateICmp(CmpInst::Predicate::ICMP_SLT, givenValue_1, nodeValue_1);
+    //Value *cond_1 = builder.CreateICmp(CmpInst::Predicate::ICMP_SLT, givenValue_1, nodeValue_1);
+    Value *cond_1 = builder.CreateICmp(CmpInst::Predicate::ICMP_EQ, givenValue_1, nodeValue_1);
     builder.CreateCondBr(cond_1,BB1,BB2);
     
  // Do the compare in the second block using the second rule.
@@ -95,7 +96,7 @@ int main() {
     outs() << "We just constructed this LLVM module:\n\n" << *M;
     outs().flush();
     std::error_code ec;
-    llvm::raw_fd_ostream os("complextest.bc", ec);
+    llvm::raw_fd_ostream os("rule1.bc", ec);
     WriteBitcodeToFile(*M, os);
     os.flush();
     return 0;

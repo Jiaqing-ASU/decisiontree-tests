@@ -1,5 +1,5 @@
 int testDataOnDecisionTreeRules(int * dataTableElement){
-    if(dataTableElement[1]==4){
+    if(dataTableElement[0]<=1 && dataTableElement[1]==4){
         return 2;
     }else{
         return -1;

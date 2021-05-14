@@ -54,16 +54,16 @@ int main() {
  // The builder will automatically append instructions to the basic block BB.
     IRBuilder<> builder(BB);
  // Set some values from the rule.
-    Value *nodeValue = builder.getInt32(4);
-    Value *trueReturn = builder.getInt32(2);
+    Value *nodeValue = builder.getInt32(2);
+    Value *trueReturn = builder.getInt32(1);
     Value *falseReturn = builder.getInt32(-1);
  // Get pointers to the integer argument of the add1 function.
     assert(F->arg_begin() != F->arg_end()); // Make sure there's an arg
     Argument *givenArray = &*F->arg_begin(); // Get the arg
     
  // Create the add instruction, inserting it into the end of BB.
-    Value* givenStart = builder.CreateConstInBoundsGEP1_64(Type::getInt32Ty(Context),givenArray,1);
-    Value* givenValue = builder.CreateLoad(givenStart);
+    //Value* givenStart = builder.CreateConstInBoundsGEP1_64(Type::getInt32Ty(Context),givenArray,1);
+    Value* givenValue = builder.CreateLoad(givenArray);
     Value *cond = builder.CreateICmp(CmpInst::Predicate::ICMP_EQ, givenValue, nodeValue);
     Value *select = builder.CreateSelect(cond, trueReturn, falseReturn);
  // Create the return instruction and add it to the basic block
@@ -72,7 +72,7 @@ int main() {
     outs() << "We just constructed this LLVM module:\n\n" << *M;
     outs().flush();
     std::error_code ec;
-    llvm::raw_fd_ostream os("test.bc", ec);
+    llvm::raw_fd_ostream os("rule3.bc", ec);
     WriteBitcodeToFile(*M, os);
     os.flush();
     return 0;
