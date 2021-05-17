@@ -33,7 +33,7 @@ struct node
 	double label;// Stores the class label for leaf nodes.
     /*For nodes that are not leaf nodes, it stores the value of the attribute of the parent's' split*/
 	bool isLeaf;// boolean flag for leaf nodes
-	vector<int> childrenValues;// Store the values of the childrens' attributes
+	vector<double> childrenValues;// Store the values of the childrens' attributes
 	vector<node*> children;// Store pointers to the children of a node
 };
 
@@ -44,9 +44,13 @@ node* buildDecisionTree(vvd&, node*, vvd&);// Build the decision tree based on t
 bool isHomogeneous(vvd&);// Return true if all instances in a subtable at a node have the same class label
 vi countDistinct(vvd&, int);// Return a vector of integers containing the counts of all the various values of an attribute/column
 double decideSplittingColumn(vvd&);// Return the column on which to split on. Decision of column is based on entropy
-int returnColumnIndex(double&, vvd&);// Return the index of a column in a subtable
+inline int returnColumnIndex(double&, vvd&);// Return the index of a column in a subtable
 bool tableIsEmpty(vvd&);// Return true if a subtable is empty
 double testDataOnDecisionTree(vd&, node*, vvd&);// Run a single instance of the test data through the decision tree and return the predicted class label
-int returnIndexOfVector(vi&, double);// Return the index of a string in a vector of strings
+inline int returnIndexOfVector(vd&, double);// Return the index of a string in a vector of strings
 void printPredictions(vd&, vd&);// Output the predictions to file
 vvd generateTableInfo(vvd &dataTable);// Generate information about the table in a vector of vector of stings
+
+/*inline int returnColIndex(double columnName, double tableInfoItem, int index){
+	return (columnName == tableInfoItem) ? index : -1;
+}*/

@@ -87,6 +87,12 @@ node* buildDecisionTree(vvd &table, node* nodePtr, vvd &tableInfo)
 		double splittingCol = decideSplittingColumn(table);
 		nodePtr->splitOn = splittingCol;
 		int colIndex = returnColumnIndex(splittingCol, tableInfo);
+		/*int colIndex = -1;
+		for(int i = 0 ; i < tableInfo.size(); i++){
+			if(returnColIndex(nodePtr->splitOn, tableInfo[i][0], i) != -1){
+				colIndex = i;
+			}
+		}*/
 		int i;
 		for (i = 1; i < tableInfo[colIndex].size(); i++) {
 			node* newNode = (node*) new node;
@@ -192,7 +198,7 @@ double decideSplittingColumn(vvd &table)
 }
 
 // Returns an integer which is the index of a column passed as a Double
-int returnColumnIndex(double &columnName, vvd &tableInfo)
+inline int returnColumnIndex(double &columnName, vvd &tableInfo)
 {
 	int i;
 	for (i = 0; i < tableInfo.size(); i++) {
@@ -215,6 +221,12 @@ double testDataOnDecisionTree(vd &singleLine, node* nodePtr, vvd &tableInfo)
 	double prediction;
 	while (!nodePtr->isLeaf && !nodePtr->children.empty()) {
 		int index = returnColumnIndex(nodePtr->splitOn, tableInfo);
+		//int index = -1;
+		/*for(int i = 0 ; i < tableInfo.size(); i++){
+			if(returnColIndex(nodePtr->splitOn, tableInfo[i][0], i) != -1){
+				index = i;
+			}
+		}*/
 		double value = singleLine[index];
 		int childIndex = returnIndexOfVector(nodePtr->childrenValues, value);
 		nodePtr = nodePtr->children[childIndex];
@@ -228,11 +240,11 @@ double testDataOnDecisionTree(vd &singleLine, node* nodePtr, vvd &tableInfo)
 }
 
 // Returns an integer which is the index of a Double in a vector of ints
-int returnIndexOfVector(vi &intVector, double value)
+int returnIndexOfVector(vd &doubleVector, double value)
 {
 	int i;
-	for (i = 0; i < intVector.size(); i++) {
-		if (intVector[i] == value)	{
+	for (i = 0; i < doubleVector.size(); i++) {
+		if (doubleVector[i] == value)	{
 			return i;
 		}
 	}
