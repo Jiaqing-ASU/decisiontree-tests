@@ -93,7 +93,7 @@ int main(int argc, const char *argv[])
     // Predict class labels based on the decision tree
     for (int i = 0; i < row; i++)
     {
-        double *someDouble = testDataOnDecisionTreeRules(dataArrayDouble[i]);
+        double someDouble = testDataOnDecisionTreeRules(dataArrayDouble[i]);
         predictedClassLabels.push_back(someDouble);
     }
     end=clock();

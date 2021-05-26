@@ -1,7 +1,8 @@
 CC = g++
 CFLAGS=-c -w -O3
 #SOURCES=functions.cpp BinDecisionTreeSimple.cpp
-SOURCES=functions.cpp BinDecisionTreeFunctionCall.cpp
+SOURCES=functions.cpp BinDecisionTreeSimpleCompare.cpp
+#SOURCES=functions.cpp BinDecisionTreeFunctionCall.cpp
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=dtree
 

@@ -1,6 +1,6 @@
 #include "header.h"
 
-double* testDataOnDecisionTreeRules(double dataTableElement[30][3], int n, double* results){
+void testDataOnDecisionTreeRules(double dataTableElement[30][3], int n, double* results){
     for(int i = 0; i < n; i++){
         if(dataTableElement[i][0]==1.0){
             if(dataTableElement[i][1]==4.0){
@@ -32,7 +32,6 @@ double* testDataOnDecisionTreeRules(double dataTableElement[30][3], int n, doubl
             }
         }
     }
-    return results;
 }
 
 int main(int argc, const char *argv[])
@@ -95,12 +94,11 @@ int main(int argc, const char *argv[])
     }
     start=clock();
     // Predict class labels based on the decision tree rule function
-    for (int i = 0; i < row/30; i++)
-    {
-        double someDouble[30];
-        double* valuePtr = testDataOnDecisionTreeRules(dataArrayDouble[i],30, someDouble);
+    double someDouble[30];
+    for (int i = 0; i < row/30; i++){
+        testDataOnDecisionTreeRules(dataArrayDouble[i],30, someDouble);
         for(int j = 0; j < 30; j++){
-            predictedClassLabels.push_back(valuePtr[j]);
+            predictedClassLabels.push_back(someDouble[j]);
         }
     }
     end=clock();
