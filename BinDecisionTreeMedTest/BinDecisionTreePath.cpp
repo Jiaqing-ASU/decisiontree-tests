@@ -131,15 +131,7 @@ double testDataOnDecisionTreeRule16(double * dataTableElement){
 int main(int argc, const char *argv[])
 {
     clock_t start,end;
-    msd mdata;
     msd mresult;
-    mdata["Sunny"] = 1.0;
-    mdata["Overcast"] = 2.0;
-    mdata["Rain"] = 3.0;
-    mdata["high"] = 4.0;
-    mdata["normal"] = 5.0;
-    mdata["strong"] = 6.0;
-    mdata["weak"] = 7.0;
     mresult["B"] = 1.0;
     mresult["M"] = 2.0;
 
