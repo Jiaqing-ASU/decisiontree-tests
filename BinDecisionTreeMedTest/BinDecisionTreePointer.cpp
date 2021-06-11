@@ -30,42 +30,10 @@ double testDataOnBinDecisionTree(double * dataTableElement, treenode* root)
 {
 	while(root->isLeaf == 0){
 		double inputValue = dataTableElement[root->index];
-		if(root->comSymbol == "="){
-			if(inputValue == root->data){
-				root = root->left;
-			}else{
-				root = root->right;
-			}
-		}else if(root->comSymbol == "<"){
-			if(inputValue < root->data){
-				root = root->left;
-			}else{
-				root = root->right;
-			}
-		}else if(root->comSymbol == ">"){
-			if(inputValue > root->data){
-				root = root->left;
-			}else{
-				root = root->right;
-			}
-		}else if(root->comSymbol == "<="){
-			if(inputValue <= root->data){
-				root = root->left;
-			}else{
-				root = root->right;
-			}
-		}else if(root->comSymbol == ">="){
-			if(inputValue >= root->data){
-				root = root->left;
-			}else{
-				root = root->right;
-			}
-		}else if(root->comSymbol == "!="){
-			if(inputValue != root->data){
-				root = root->left;
-			}else{
-				root = root->right;
-			}
+		if(inputValue <= root->data){
+			root = root->left;
+		}else{
+			root = root->right;
 		}
 	}
 	return root->data;

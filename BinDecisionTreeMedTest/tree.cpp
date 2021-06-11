@@ -15,43 +15,11 @@ extern "C" double testDataOnBinDecisionTree(double * dataTableElement, Treenode*
     int i = 0;
     while(treenodes[i].isLeaf == 0){
         double inputValue = dataTableElement[treenodes[i].index];
-        if(treenodes[i].comSymbol == "="){
-            if(inputValue == treenodes[i].data){
-                i = treenodes[i].left;
-            }else{
-                i = treenodes[i].right;
-            }
-        }else if(treenodes[i].comSymbol == "<"){
-            if(inputValue < treenodes[i].data){
-                i = treenodes[i].left;
-            }else{
-                i = treenodes[i].right;
-            }
-        }else if(treenodes[i].comSymbol == ">"){
-            if(inputValue > treenodes[i].data){
-                i = treenodes[i].left;
-            }else{
-                i = treenodes[i].right;
-            }
-        }else if(treenodes[i].comSymbol == "<="){
-            if(inputValue <= treenodes[i].data){
-                i = treenodes[i].left;
-            }else{
-                i = treenodes[i].right;
-            }
-        }else if(treenodes[i].comSymbol == ">="){
-            if(inputValue >= treenodes[i].data){
-                i = treenodes[i].left;
-            }else{
-                i = treenodes[i].right;
-            }
-        }else if(treenodes[i].comSymbol == "!="){
-            if(inputValue != treenodes[i].data){
-                i = treenodes[i].left;
-            }else{
-                i = treenodes[i].right;
-            }
-        }
+        if(inputValue <= treenodes[i].data){
+            i = treenodes[i].left;
+        }else{
+            i = treenodes[i].right;
+        } 
     }
     return treenodes[i].data;
 }
