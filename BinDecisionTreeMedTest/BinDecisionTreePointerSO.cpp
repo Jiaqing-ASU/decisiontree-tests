@@ -1,7 +1,80 @@
+#include<stdio.h>
+#include<malloc.h>
+#include <string>
+#include <iostream>
 #include "header.h"
+using namespace std;
+
+struct treenode {
+    double data; //value to compare if not leaf, return value if leaf
+    int index; //index to compare, -1 if leaf
+    bool isLeaf; //leaf or not
+    string comSymbol; //symbol to compare, "?" for leaf
+    struct treenode *left; //pointer to left child
+    struct treenode *right; //pointer to right child
+};
+
+struct treenode* createNode(int index, double data, bool isLeaf, string comSymbol) {
+    // this function will return the pointer for the new node
+    struct treenode *newNode= (struct treenode *)malloc(sizeof(struct treenode));
+    newNode->data = data;
+    newNode->index = index;
+    newNode->isLeaf = isLeaf;
+    newNode->comSymbol = comSymbol;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
 
 int main(int argc, const char *argv[])
 {
+    struct treenode *root = createNode(7,0.052,false,"<=");
+
+    root->left = createNode(20,16.54,false,"<=");
+    root->right = createNode(26,0.225,false,"<=");
+
+    root->left->left = createNode(13,37.61,false,"<=");
+    root->left->right = createNode(21,20.22,false,"<=");
+
+    root->right->left = createNode(-1,2.0,true,"?");
+    root->right->right = createNode(23,710.2,false,"<=");
+
+    root->left->left->left = createNode(21,33.27,false,"<=");
+    root->left->left->right = createNode(4,0.091,false,"<=");
+
+    root->left->right->left = createNode(-1,2.0,true,"?");
+    root->left->right->right = createNode(17,0.011,false,"<=");
+
+    root->right->right->left = createNode(21,25.95,false,"<=");
+    root->right->right->right = createNode(1,14.12,false,"<=");
+
+    root->left->left->left->left = createNode(-1,2.0,true,"?");
+    root->left->left->left->right = createNode(21,34.14,false,"<=");
+
+    root->left->left->right->left = createNode(-1,2.0,true,"?");
+    root->left->left->right->right = createNode(17,0.012,false,"<=");
+
+    root->left->right->right->left = createNode(-1,1.0,true,"?");
+    root->left->right->right->right = createNode(-1,2.0,true,"?");
+
+    root->right->right->left->left = createNode(-1,2.0,true,"?");
+    root->right->right->left->right = createNode(9,0.065,false,"<=");
+
+    root->right->right->right->left = createNode(25,0.361,false,"<=");
+    root->right->right->right->right = createNode(-1,1.0,true,"?");
+
+    root->left->left->left->right->left = createNode(-1,1.0,true,"?");
+    root->left->left->left->right->right = createNode(-1,2.0,true,"?");
+
+    root->left->left->right->right->left = createNode(-1,2.0,true,"?");
+    root->left->left->right->right->right = createNode(-1,1.0,true,"?");
+
+    root->right->right->left->right->left = createNode(-1,2.0,true,"?");
+    root->right->right->left->right->right = createNode(-1,1.0,true,"?");
+
+    root->right->right->right->left->left = createNode(-1,1.0,true,"?");
+    root->right->right->right->left->right = createNode(-1,2.0,true,"?");
+
     clock_t start,end;
     msd mresult;
     mresult["B"] = 1.0;
@@ -28,7 +101,7 @@ int main(int argc, const char *argv[])
     vd predictedClassLabelsDouble;
     // Stores the given class labels in the test data in Int
     vd givenClassLabelsDouble;
-    // Store given class labels in vector of strings named givenClassLabels
+    // Store given class labels in vector of strings named givenClassLabelsDouble
     // Transfer input data from string to Int using map
     for (int i = 1; i < dataTable.size(); i++)
     {
@@ -39,15 +112,15 @@ int main(int argc, const char *argv[])
             dataArrayDouble[i-1][j] = std::stod(dataTable[i][j]);
         }
     }
-    void* libHandle = dlopen("librules.so", RTLD_LAZY);
+    void* libHandle = dlopen("libtreepointer.so", RTLD_LAZY);
     if(!libHandle)
 	{
 		printf("open lib error\n");
 		cout<<dlerror()<<endl;
 		return -1;
 	}
-    typedef double (* rules_func_t)(double * a);
-    rules_func_t rules_func= (rules_func_t)dlsym(libHandle, "testDataOnDecisionTreeRules");
+    typedef double (* rules_func_t)(double * a, treenode *root);
+    rules_func_t rules_func= (rules_func_t)dlsym(libHandle, "testDataOnBinDecisionTree");
     if(!rules_func)
 	{
 		cout<<dlerror()<<endl;
@@ -58,7 +131,7 @@ int main(int argc, const char *argv[])
     // Predict class labels based on the decision tree
     for (int i = 0; i < row; i++)
 	{
-        double someDouble = rules_func(dataArrayDouble[i]);
+        double someDouble = rules_func(dataArrayDouble[i], root);
 		predictedClassLabelsDouble.push_back(someDouble);
 	}
     end=clock();
