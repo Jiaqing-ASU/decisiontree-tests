@@ -35,5 +35,5 @@ $g++ -O3 -shared -fpic -lm -ldl -o librules.so rules.cpp
 (change the librules.so and rules.cpp to what you want: rules.cpp/tree.cpp/treepointer.cpp)
 
 And then run the C test program using the following command:
-$g++ -O3 functions.cpp DecisionTreeUseRulesSO.cpp -ldl -o dtreeso
+$g++ -O3 functions.cpp BinDecisionTreeArraySO.cpp -ldl -o dtreeso
 $./dtreeso data.csv
