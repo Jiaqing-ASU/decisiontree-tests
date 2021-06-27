@@ -159,14 +159,14 @@ int main(int argc, const char *argv[])
     // Store given class labels in vector of strings named givenClassLabels
     // Transfer input data from string to Int using map
     for (int i = 1; i < dataTable.size(); i++)
-	{
+    {
         string data = dataTable[i][1];
         double dataDouble = mresult[data];
         givenClassLabelsDouble.push_back(dataDouble);
-        for (int j = 2; j < dataTable[0].size()-1; j++){
-            dataArrayDouble[i-1][j] = std::stod(dataTable[i][j]);
+        for (int j = 0; j < dataTable[0].size()-1-2; j++){
+            dataArrayDouble[i-1][j] = std::stod(dataTable[i][j+2]);
         }
-	}
+    }
     double someDouble;
     double resultDouble1, resultDouble2, resultDouble3, resultDouble4, resultDouble5,
     resultDouble6, resultDouble7, resultDouble8, resultDouble9, resultDouble10,resultDouble11,

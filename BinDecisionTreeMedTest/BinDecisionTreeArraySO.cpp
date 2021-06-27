@@ -92,8 +92,8 @@ int main(int argc, const char *argv[])
         string data = dataTable[i][1];
         double dataDouble = mresult[data];
         givenClassLabelsDouble.push_back(dataDouble);
-        for (int j = 2; j < dataTable[0].size()-1; j++){
-            dataArrayDouble[i-1][j] = std::stod(dataTable[i][j]);
+        for (int j = 0; j < dataTable[0].size()-1-2; j++){
+            dataArrayDouble[i-1][j] = std::stod(dataTable[i][j+2]);
         }
     }
     void* libHandle = dlopen("libtrees.so", RTLD_LAZY);
