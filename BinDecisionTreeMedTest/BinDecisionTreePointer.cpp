@@ -90,8 +90,8 @@ int main(int argc, const char *argv[])
 
     clock_t start,end;
     msd mresult;
-    mresult["B"] = 1.0;
-    mresult["M"] = 2.0;
+    mresult["B"] = 2.0;
+    mresult["M"] = 1.0;
 	ifstream inputFile;// Input file stream
 	string singleInstance;// Single line read from the input file 
 	vvs dataTable;// Input data in the form of a vector of vector of strings

@@ -76,8 +76,8 @@ int main(int argc, const char *argv[])
 {
     clock_t start,end;
     msd mresult;
-    mresult["B"] = 1.0;
-    mresult["M"] = 2.0;
+    mresult["B"] = 2.0;
+    mresult["M"] = 1.0;
     InitializeNativeTarget();
     InitializeNativeTargetAsmPrinter();
     InitializeNativeTargetAsmParser();
