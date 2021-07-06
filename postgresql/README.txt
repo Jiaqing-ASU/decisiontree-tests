@@ -18,14 +18,23 @@ Create the generic implementation UDF query function.
 And then, test this UDF query function using the first input as an example.
 #select test(842302);
 
+Test this UDF query function execution time.
+#\i /home/jiaqingchen/postgresql/database/runtime4generic.sql
+
 Create the specialized implementation UDF query function.
 #\i /home/jiaqingchen/postgresql/database/rulesfun.sql
 
 And then, test this UDF query function using the first input as an example.
 #select rules(842302);
 
+Test this UDF query function execution time.
+#\i /home/jiaqingchen/postgresql/database/runtime4specialized.sql
+
 Create the path based UDF query function.
 #\i /home/jiaqingchen/postgresql/database/pathsfun.sql
 
 And then, test this UDF query function using the first input as an example.
 #select paths(842302);
+
+Test this UDF query function execution time.
+#\i /home/jiaqingchen/postgresql/database/runtime4paths.sql
