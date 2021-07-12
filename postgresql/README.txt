@@ -12,29 +12,38 @@ First create 3 tables and load the data of input and tree nodes.
 
 #copy columns from '/home/jiaqingchen/postgresql/Data/columns.csv' WITH CSV HEADER;
 
-Create the generic implementation UDF query function.
-#\i /home/jiaqingchen/postgresql/database/createfun.sql
+Create the generic implementation UDF model logic function.
+#\i /home/jiaqingchen/postgresql/database/genericfun.sql
 
-And then, test this UDF query function using the first input as an example.
-#select test(842302);
+Create the UDF query function of the above UDF model logic function.
+#\i /home/jiaqingchen/postgresql/database/callgenericfun.sql
+
+And then, test this UDF query function using the whole dataset which contains 569 inferences.
+#select call_generic();
 
 Test this UDF query function execution time.
 #\i /home/jiaqingchen/postgresql/database/runtime4generic.sql
 
-Create the specialized implementation UDF query function.
-#\i /home/jiaqingchen/postgresql/database/rulesfun.sql
+Create the specialized implementation UDF model logic function.
+#\i /home/jiaqingchen/postgresql/database/specializedfun.sql
 
-And then, test this UDF query function using the first input as an example.
-#select rules(842302);
+Create the UDF query function of the above UDF model logic function.
+#\i /home/jiaqingchen/postgresql/database/callspecializedfun.sql
+
+And then, test this UDF query function using the whole dataset which contains 569 inferences.
+#select call_specialized();
 
 Test this UDF query function execution time.
 #\i /home/jiaqingchen/postgresql/database/runtime4specialized.sql
 
-Create the path based UDF query function.
+Create the path based UDF UDF model logic function.
 #\i /home/jiaqingchen/postgresql/database/pathsfun.sql
 
-And then, test this UDF query function using the first input as an example.
-#select paths(842302);
+Create the UDF query function of the above UDF model logic function.
+#\i /home/jiaqingchen/postgresql/database/callpathsfun.sql
+
+And then, test this UDF query function using the whole dataset which contains 569 inferences.
+#select call_paths();
 
 Test this UDF query function execution time.
 #\i /home/jiaqingchen/postgresql/database/runtime4paths.sql
