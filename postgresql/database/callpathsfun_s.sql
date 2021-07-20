@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION call_generic() RETURNS table (result double precision) 
+CREATE OR REPLACE FUNCTION call_paths_s() RETURNS table (result double precision) 
 AS
 $BODY$
 	declare single_result double precision default -1.0;
@@ -44,7 +44,7 @@ begin
 		LOOP
 			fetch cur_records into rec;
 			exit when not found;
-
+		
 			single_array[0] := rec.radius_mean;
 			single_array[1] := rec.texture_mean;
 			single_array[2] := rec.perimeter_mean;
@@ -76,7 +76,7 @@ begin
 			single_array[28] := rec.symmetry_worst;
 			single_array[29] := rec.fractal_dimension_worst;
 
-			EXECUTE format('SELECT generic($1);') using single_array into single_result;
+			EXECUTE format('SELECT paths_s($1);') using single_array into single_result;
 			result := single_result;
 			return next;
 		END LOOP;
