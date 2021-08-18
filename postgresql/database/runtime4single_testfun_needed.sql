@@ -19,9 +19,9 @@ begin
 	single_array[9] := rec.compactness_worst;
 	single_array[10] := rec.concavity_worst;
 
-	/*EXECUTE format('SELECT specialized_needed($1);') using single_array;*/
+	EXECUTE format('SELECT specialized_needed($1);') using single_array;
 	/*EXECUTE format('SELECT paths_needed($1);') using single_array;*/
-	EXECUTE format('SELECT paths_s_needed($1);') using single_array;
+	/*EXECUTE format('SELECT paths_s_needed($1);') using single_array;*/
 	close cur_records;
 end;
 $BODY$

@@ -31,15 +31,15 @@ begin
 	compactness_worst := rec.compactness_worst;
 	concavity_worst := rec.concavity_worst;
 
-	/*EXECUTE format('SELECT specialized_dsl_needed($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11);') using
+	EXECUTE format('SELECT specialized_dsl_needed($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11);') using
 		texture_mean,smoothness_mean,concave_points_mean,fractal_dimension_mean,area_se,
-		concave_points_se,radius_worst,texture_worst,area_worst,compactness_worst,concavity_worst;*/
+		concave_points_se,radius_worst,texture_worst,area_worst,compactness_worst,concavity_worst;
 	/*EXECUTE format('SELECT paths_dsl_needed($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11);') using
 		texture_mean,smoothness_mean,concave_points_mean,fractal_dimension_mean,area_se,
 		concave_points_se,radius_worst,texture_worst,area_worst,compactness_worst,concavity_worst;*/
-	EXECUTE format('SELECT paths_dsl_s_needed($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11);') using
+	/*EXECUTE format('SELECT paths_dsl_s_needed($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11);') using
 		texture_mean,smoothness_mean,concave_points_mean,fractal_dimension_mean,area_se,
-		concave_points_se,radius_worst,texture_worst,area_worst,compactness_worst,concavity_worst;
+		concave_points_se,radius_worst,texture_worst,area_worst,compactness_worst,concavity_worst;*/
 	close cur_records;
 end;
 $BODY$

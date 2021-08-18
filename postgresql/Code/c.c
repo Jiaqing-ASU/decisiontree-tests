@@ -3,10 +3,28 @@
 #include "fmgr.h"
 #include "funcapi.h"
 #include "utils/geo_decls.h"
+#include "protocol.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <unistd.h>
+#include <stdbool.h>
 
 #ifdef PG_MODULE_MAGIC
 PG_MODULE_MAGIC;
 #endif
+
+typedef struct Treenode {
+        int index; //index to compare, -1 if leaf
+        float8 data; //value to compare if not leaf, return value if leaf
+        bool isLeaf; //leaf or not
+        int left; //left child index in tree array
+        int right; //right child index in tree array
+    }Treenode;
+
+static Treenode *ptr = NULL;
 
 PG_FUNCTION_INFO_V1(add_one);
 
@@ -572,6 +590,7 @@ paths_dsl_s_needed(PG_FUNCTION_ARGS)
     PG_RETURN_FLOAT8(-1.0);
 }
 
+/*
 PG_FUNCTION_INFO_V1(generic_pointer_dsl);
 
 Datum
@@ -610,6 +629,7 @@ generic_pointer_dsl(PG_FUNCTION_ARGS)
     dataTableElement[29] = PG_GETARG_FLOAT8(29);
     /*treenode *root = PG_GETARG_TEXT_P(30);*/
 
+/*
     typedef struct treeNode{
         int index; //index to compare, -1 if leaf
         float8 data; //value to compare if not leaf, return value if leaf
@@ -847,6 +867,7 @@ generic_pointer_dsl(PG_FUNCTION_ARGS)
 
     PG_RETURN_FLOAT8(root->data);
 }
+*/
 
 PG_FUNCTION_INFO_V1(generic_array_dsl);
 
@@ -885,7 +906,7 @@ generic_array_dsl(PG_FUNCTION_ARGS)
     dataTableElement[28] = PG_GETARG_FLOAT8(28);
     dataTableElement[29] = PG_GETARG_FLOAT8(29);
 
-    typedef struct Treenode {
+    /*typedef struct Treenode {
         int index; //index to compare, -1 if leaf
         float8 data; //value to compare if not leaf, return value if leaf
         bool isLeaf; //leaf or not
@@ -893,6 +914,9 @@ generic_array_dsl(PG_FUNCTION_ARGS)
         int right; //right child index in tree array
     }Treenode;
 
+    static Treenode *ptr = NULL;*/
+
+    if(ptr == NULL){
     Treenode treenodes[31];
 
     treenodes[0].index = 7;
@@ -1081,6 +1105,104 @@ generic_array_dsl(PG_FUNCTION_ARGS)
     treenodes[30].left = -1;
     treenodes[30].right = -1;
 
+    ptr = treenodes;}
+
+    int i = 0;
+    /*while(treenodes[i].isLeaf == false){
+        double inputValue = dataTableElement[treenodes[i].index];
+        if(inputValue <= treenodes[i].data){
+            i = treenodes[i].left;
+        }else{
+            i = treenodes[i].right;
+        } 
+    }
+    PG_RETURN_FLOAT8(treenodes[i].data);*/
+
+    while(ptr[i].isLeaf == false){
+        double inputValue = dataTableElement[ptr[i].index];
+        if(inputValue <= ptr[i].data){
+            i = ptr[i].left;
+        }else{
+            i = ptr[i].right;
+        } 
+    }
+    PG_RETURN_FLOAT8(ptr[i].data);
+}
+
+PG_FUNCTION_INFO_V1(generic_array_dsl_posix);
+
+Datum
+generic_array_dsl_posix(PG_FUNCTION_ARGS)
+{
+    float8 dataTableElement[30];
+    dataTableElement[0] = PG_GETARG_FLOAT8(0);
+    dataTableElement[1] = PG_GETARG_FLOAT8(1);
+    dataTableElement[2] = PG_GETARG_FLOAT8(2);
+    dataTableElement[3] = PG_GETARG_FLOAT8(3);
+    dataTableElement[4] = PG_GETARG_FLOAT8(4);
+    dataTableElement[5] = PG_GETARG_FLOAT8(5);
+    dataTableElement[6] = PG_GETARG_FLOAT8(6);
+    dataTableElement[7] = PG_GETARG_FLOAT8(7);
+    dataTableElement[8] = PG_GETARG_FLOAT8(8);
+    dataTableElement[9] = PG_GETARG_FLOAT8(9);
+    dataTableElement[10] = PG_GETARG_FLOAT8(10);
+    dataTableElement[11] = PG_GETARG_FLOAT8(11);
+    dataTableElement[12] = PG_GETARG_FLOAT8(12);
+    dataTableElement[13] = PG_GETARG_FLOAT8(13);
+    dataTableElement[14] = PG_GETARG_FLOAT8(14);
+    dataTableElement[15] = PG_GETARG_FLOAT8(15);
+    dataTableElement[16] = PG_GETARG_FLOAT8(16);
+    dataTableElement[17] = PG_GETARG_FLOAT8(17);
+    dataTableElement[18] = PG_GETARG_FLOAT8(18);
+    dataTableElement[19] = PG_GETARG_FLOAT8(19);
+    dataTableElement[20] = PG_GETARG_FLOAT8(20);
+    dataTableElement[21] = PG_GETARG_FLOAT8(21);
+    dataTableElement[22] = PG_GETARG_FLOAT8(22);
+    dataTableElement[23] = PG_GETARG_FLOAT8(23);
+    dataTableElement[24] = PG_GETARG_FLOAT8(24);
+    dataTableElement[25] = PG_GETARG_FLOAT8(25);
+    dataTableElement[26] = PG_GETARG_FLOAT8(26);
+    dataTableElement[27] = PG_GETARG_FLOAT8(27);
+    dataTableElement[28] = PG_GETARG_FLOAT8(28);
+    dataTableElement[29] = PG_GETARG_FLOAT8(29);
+
+    typedef struct Treenode {
+        int index; //index to compare, -1 if leaf
+        float8 data; //value to compare if not leaf, return value if leaf
+        bool isLeaf; //leaf or not
+        int left; //left child index in tree array
+        int right; //right child index in tree array
+    }Treenode;
+
+    int size = (NUM_INT * sizeof(int) + NUM_DOUBLE * sizeof(float8) + NUM_BOOL * sizeof(bool)) * 31;
+    int fd = shm_open(NAME,O_RDONLY, 0666);
+    if (fd < 0) {
+        
+        if (errno == EACCES){
+            PG_RETURN_FLOAT8(-2.0);
+        } else if (errno == EEXIST){
+            PG_RETURN_FLOAT8(-3.0);
+        } else if (errno == EINTR){
+            PG_RETURN_FLOAT8(-4.0);
+        } else if (errno == EINVAL){
+            PG_RETURN_FLOAT8(-5.0);
+        } else if (errno == EMFILE){
+            PG_RETURN_FLOAT8(-6.0);
+        } else if (errno == ENAMETOOLONG){
+            PG_RETURN_FLOAT8(-7.0);
+        } else if (errno == ENFILE){
+            PG_RETURN_FLOAT8(-8.0);
+        } else if (errno == ENOENT){
+            PG_RETURN_FLOAT8(-9.0);
+        } else if (errno == ENOSPC){
+            PG_RETURN_FLOAT8(-10.0);
+        }
+
+        PG_RETURN_FLOAT8(-11.0);
+        //PG_RETURN_FLOAT8(-2.0);
+    }
+
+    Treenode *treenodes = (Treenode*)mmap(0,size,PROT_READ, MAP_SHARED,fd,0);
     int i = 0;
     while(treenodes[i].isLeaf == false){
         double inputValue = dataTableElement[treenodes[i].index];
@@ -1090,5 +1212,7 @@ generic_array_dsl(PG_FUNCTION_ARGS)
             i = treenodes[i].right;
         } 
     }
+    munmap(treenodes,size);
+    close(fd);
     PG_RETURN_FLOAT8(treenodes[i].data);
 }

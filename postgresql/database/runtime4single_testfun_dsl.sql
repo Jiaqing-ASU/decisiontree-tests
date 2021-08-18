@@ -70,11 +70,11 @@ begin
 	symmetry_worst := rec.symmetry_worst;
 	fractal_dimension_worst := rec.fractal_dimension_worst;
 
-	/*EXECUTE format('SELECT generic_array_dsl($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30);') using
+	EXECUTE format('SELECT generic_array_dsl($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30);') using
 		radius_mean,texture_mean,perimeter_mean,area_mean,smoothness_mean,compactness_mean,concavity_mean,concave_points_mean,
 		symmetry_mean,fractal_dimension_mean,radius_se,texture_se,perimeter_se,area_se,smoothness_se,compactness_se,concavity_se,
 		concave_points_se,symmetry_se,fractal_dimension_se,radius_worst,texture_worst,perimeter_worst,area_worst,smoothness_worst,
-		compactness_worst,concavity_worst,concave_points_worst,symmetry_worst,fractal_dimension_worst;*/
+		compactness_worst,concavity_worst,concave_points_worst,symmetry_worst,fractal_dimension_worst;
 	/*EXECUTE format('SELECT generic_pointer_dsl($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30);') using
 		radius_mean,texture_mean,perimeter_mean,area_mean,smoothness_mean,compactness_mean,concavity_mean,concave_points_mean,
 		symmetry_mean,fractal_dimension_mean,radius_se,texture_se,perimeter_se,area_se,smoothness_se,compactness_se,concavity_se,
@@ -90,11 +90,11 @@ begin
 		symmetry_mean,fractal_dimension_mean,radius_se,texture_se,perimeter_se,area_se,smoothness_se,compactness_se,concavity_se,
 		concave_points_se,symmetry_se,fractal_dimension_se,radius_worst,texture_worst,perimeter_worst,area_worst,smoothness_worst,
 		compactness_worst,concavity_worst,concave_points_worst,symmetry_worst,fractal_dimension_worst;*/
-	EXECUTE format('SELECT paths_dsl_s($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30);') using
+	/*EXECUTE format('SELECT paths_dsl_s($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30);') using
 		radius_mean,texture_mean,perimeter_mean,area_mean,smoothness_mean,compactness_mean,concavity_mean,concave_points_mean,
 		symmetry_mean,fractal_dimension_mean,radius_se,texture_se,perimeter_se,area_se,smoothness_se,compactness_se,concavity_se,
 		concave_points_se,symmetry_se,fractal_dimension_se,radius_worst,texture_worst,perimeter_worst,area_worst,smoothness_worst,
-		compactness_worst,concavity_worst,concave_points_worst,symmetry_worst,fractal_dimension_worst;
+		compactness_worst,concavity_worst,concave_points_worst,symmetry_worst,fractal_dimension_worst;*/
 	close cur_records;
 end;
 $BODY$

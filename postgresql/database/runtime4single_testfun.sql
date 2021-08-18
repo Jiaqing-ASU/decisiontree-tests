@@ -38,10 +38,10 @@ begin
 	single_array[28] := rec.symmetry_worst;
 	single_array[29] := rec.fractal_dimension_worst;
 
-	/*EXECUTE format('SELECT generic($1);') using single_array;*/
+	EXECUTE format('SELECT generic($1);') using single_array;
 	/*EXECUTE format('SELECT specialized($1);') using single_array;*/
 	/*EXECUTE format('SELECT paths($1);') using single_array;*/
-	EXECUTE format('SELECT paths_s($1);') using single_array;
+	/*EXECUTE format('SELECT paths_s($1);') using single_array;*/
 	close cur_records;
 end;
 $BODY$
